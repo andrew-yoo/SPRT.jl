@@ -2,3 +2,16 @@ name = "SPRT"
 uuid = "a2378c81-d1d0-4311-bf09-3cc9385ef5a8"
 version = "0.0.1"
 authors = ["Andrew Yoo"]
+
+[deps]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+
+[compat]
+julia = "1"
+Distributions = "0.25"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

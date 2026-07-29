@@ -11,7 +11,7 @@ end
 
 struct SPRTOut
     decision::String
-    n_decision::Union{Int, Nothing}
+    n_decision::Int
     logL::Vector{Float64}
     A::Float64
     B::Float64
@@ -38,7 +38,7 @@ function sprt(x::AbstractVector{<:Real}, plan::SPRTIn; α=0.05, β=0.05)
         end
     end
     
-    return SPRTOut("Continue sampling", i, logL, A, B)
+    return SPRTOut("Continue sampling", length(x), logL, A, B)
 end
 
 end
