@@ -1,8 +1,9 @@
 module SPRT
 
 using Distributions
+using UnicodePlots
 
-export SPRTOut, SPRTIn, sprt
+export SPRTOut, SPRTIn, sprt, sprt_plot, plot_sprt
 
 struct SPRTIn{D}
     null::D
@@ -39,6 +40,17 @@ function sprt(x::AbstractVector{<:Real}, plan::SPRTIn; α=0.05, β=0.05)
     end
     
     return SPRTOut("Continue sampling", length(x), logL, A, B)
+end
+
+function plot_sprt(out::SPRTOut)
+    lst = pushfirst!(out.logL, 0)
+    len = length(lst)
+    min_ = min(out.B, minimum(lst))
+    max_ = max(out.A, maximum(lst))
+
+    p = lineplot(0:len-1, lst; xlim=(0, len-1), ylim=(min_, max_), xlabel="Sample", ylabel="Cumulative LLR", title="Sequential Probability Ratio Test", color=:blue, canvas=BrailleCanvas)
+    hline!(p, out.A, color=:green)
+    hline!(p, out.B, color=:red)
 end
 
 end
