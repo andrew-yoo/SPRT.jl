@@ -3,7 +3,7 @@ module SPRT
 using Distributions
 using UnicodePlots
 
-export SPRTOut, SPRTIn, sprt, sprt_plot, plot_sprt
+export SPRTOut, SPRTIn, sprt, plot_sprt
 
 struct SPRTIn{D}
     null::D
