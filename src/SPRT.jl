@@ -2,9 +2,14 @@ module SPRT
 
 using Distributions
 
-export SPRTResult, sprt
+export SPRTOut, SPRTIn, sprt
 
-struct SPRTResult
+struct SPRTIn{D}
+    null::D
+    alt::D
+end
+
+struct SPRTOut
     decision::String
     n_decision::Union{Int, Nothing}
     logL::Vector{Float64}
@@ -12,44 +17,28 @@ struct SPRTResult
     B::Float64
 end
 
-function sprt(x::AbstractVector{<:Real}; α=0.05, β=0.05, p0, p1, dist, σ=nothing)
-
+function sprt(x::AbstractVector{<:Real}, plan::SPRTIn; α=0.05, β=0.05)
+    # Thresholds
     A = log((1 - β) / α)
     B = log(β / (1 - α))
 
     logL = Float64[]
-    s = 0.0
+    s = 0.0 # cumulative LLR
 
     for (i, xi) in enumerate(x)
-        if dist == "bernoulli"
-            lr = logpdf(Bernoulli(p1), xi) - logpdf(Bernoulli(p0), xi)
-
-        elseif dist == "poisson"
-            lr = logpdf(Poisson(p1), xi) - logpdf(Poisson(p0), xi)
-
-        elseif dist == "normal"
-            if σ === nothing
-                error("σ is required for normal distributions")
-            end
-            lr = logpdf(Normal(p1, σ), xi) - logpdf(Normal(p0, σ), xi)
-
-        else
-            error("dist must be one of: \"bernoulli\", \"poisson\", or \"normal\"")
-        end
-
-        s += lr
+        s += logpdf(plan.alt, xi) - logpdf(plan.null, xi)
         push!(logL, s)
 
+        # Check thresholds
         if s >= A
-            return SPRTResult("Reject H0", i, logL, A, B)
+            return SPRTOut("Reject H0", i, logL, A, B)
         end
-
         if s <= B
-            return SPRTResult("Accept H0", i, logL, A, B)
+            return SPRTOut("Accept H0", i, logL, A, B)
         end
     end
-
-    return SPRTResult("Continue sampling", nothing, logL, A, B)
+    
+    return SPRTOut("Continue sampling", i, logL, A, B)
 end
 
 end
