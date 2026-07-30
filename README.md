@@ -1,8 +1,8 @@
-# SPRT.jl
+# SequentialProbability.jl
 
-![License](https://img.shields.io/github/license/andrew-yoo/SPRT.jl)
+<!-- ![License](https://img.shields.io/github/license/andrew-yoo/SPRT.jl) -->
 
-SPRT.jl is a lightweight package implementing Wald's Sequential Probability Ratio Test.
+SequentialProbability.jl is a lightweight package implementing Wald's Sequential Probability Ratio Test.
 This is similar to the CRAN package [SPRT](https://cran.r-project.org/web/packages/SPRT/index.html) but with some additional functionality.
 
 ## Usage

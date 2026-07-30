@@ -1,6 +1,6 @@
 
 
-using SPRT
+using SequentialProbability
 using Distributions
 using Test
 

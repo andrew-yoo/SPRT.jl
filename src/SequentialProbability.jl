@@ -1,4 +1,4 @@
-module SPRT
+module SequentialProbability
 
 using Distributions
 using UnicodePlots
